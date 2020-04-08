@@ -59,4 +59,19 @@ router.get('/', (req,res) => {
         .catch(err => { res.status(500).json({error: "The posts information could not be retrieved."})})
 })
 
+router.get('/:id', async (req,res) => {
+    const { id } = req.params
+    const post = await Posts.findById(id).first()
+    if(post){
+        Posts.findById(id)
+            .then(post => {
+                res.status(200).json(post[0])
+            })
+            .catch(err => { res.status(500).json({error: "The post information could not be retrieved."})})
+    }
+    else{
+        res.status(404).json({ message: `The post with the specified ID, ${id}, does not exist.` })
+    }
+})
+
 module.exports = router;
